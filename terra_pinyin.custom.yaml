@@ -10,7 +10,6 @@ patch:
       「漢語拼音」，以符號按鍵 - / < \ 輸入四聲
       拼音碼表根據 CC-CEDICT 改編
     dependencies:
-      - wubi86_jidian
       - stroke
       - chaizi # https://github.com/MaxChang3/rime-chaizi
       - melt_eng # 英文方案
@@ -52,7 +51,6 @@ patch:
     segmentors:
       - ascii_segmentor
       - matcher
-      - affix_segmentor@wubi86_jidian
       - affix_segmentor@chaizi
       - affix_segmentor@stroke
       - abc_segmentor
@@ -65,7 +63,6 @@ patch:
       - punct_translator
       - table_translator@custom_phrase
       - table_translator@melt_eng  # 英文输入（作为子翻译器，优先级需要比原生的低）
-      - reverse_lookup_translator@wubi86_jidian
       - reverse_lookup_translator@chaizi
       - reverse_lookup_translator@stroke
       - script_translator
@@ -202,45 +199,6 @@ patch:
     enable_completion: false       # 关闭自动提示
     initial_quality: 0.8
 
-  wubi86_jidian:
-    tag: wubi86_jidian
-    dictionary: wubi86_jidian
-    enable_user_dict: false
-    enable_completion: true
-    prefix: "`"
-    suffix: "'"
-    tips: 〔五笔〕
-    comment_format:
-      - xform ([aeiou])(ng?|r)([1234]) $1$3$2
-      - xform ([aeo])([iuo])([1234]) $1$3$2
-      - xform a1 ā
-      - xform a2 á
-      - xform a3 ǎ
-      - xform a4 à
-      - xform e1 ē
-      - xform e2 é
-      - xform e3 ě
-      - xform e4 è
-      - xform o1 ō
-      - xform o2 ó
-      - xform o3 ǒ
-      - xform o4 ò
-      - xform i1 ī
-      - xform i2 í
-      - xform i3 ǐ
-      - xform i4 ì
-      - xform u1 ū
-      - xform u2 ú
-      - xform u3 ǔ
-      - xform u4 ù
-      - xform v1 ǖ
-      - xform v2 ǘ
-      - xform v3 ǚ
-      - xform v4 ǜ
-      - xform/([nljqxy])v/$1ü/
-      - xform/eh[0-5]?/ê/
-      - xform/([a-z]+)[0-5]/$1/
-
   stroke:
     tag: stroke
     dictionary: stroke
@@ -324,12 +282,12 @@ patch:
 
 
   reverse_lookup:
-    tags: [wubi86_jidian,stroke,chaizi]
+    tags: [stroke,chaizi]
     overwrite_comment: false
 
   
   punctuator:
-    import_preset: default
+    import_preset: symbols
   
   key_binder:
     import_preset: default
@@ -341,7 +299,6 @@ patch:
     import_preset: default
     patterns:
       punct: "^/([0-9]0?|[a-z]+)$"
-      wubi86_jidian: "`[a-z]*'?$"
       stroke: "i[a-z]*'?$"
       chaizi: "u[a-z]*'?$"
 

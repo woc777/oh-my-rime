@@ -17,7 +17,6 @@ schema:
       * opencc - 開放中文轉換
   dependencies:
     - chaizi # 参考 https://github.com/MaxChang3/rime-chaizi
-    - wubi98_mint # 98五笔库 https://github.com/yanhuacuo/98wubi-tables
     - stroke
     - melt_eng # 英文方案
 
@@ -59,7 +58,6 @@ engine:
   segmentors:
     - ascii_segmentor # 標識西文段落
     - matcher # 標識符合特定規則的段落，如網址、反查等
-    - affix_segmentor@wubi98_mint
     - affix_segmentor@chaizi
     - affix_segmentor@stroke
     - abc_segmentor # 標識常規的文字段落
@@ -74,7 +72,6 @@ engine:
     - lua_translator@number_translator # 金额大小写
     - table_translator@melt_eng  # 英文输入（作为子翻译器，优先级需要比原生的低）
     # - echo_translator      # ※ 没有候选词，返回字符
-    - reverse_lookup_translator@wubi98_mint
     - reverse_lookup_translator@chaizi
     - reverse_lookup_translator@stroke
     # - reverse_lookup_translator # 反查模块，多标签情况下去除
@@ -104,12 +101,7 @@ reduce_english_filter:
   # 降低到第 idx 个位置
   idx: 2
   # 要降低的单词，匹配的是输入码，即全小写。
-  words: [rug, bus, ship, laos, bail, bam, bans, bib, bos, chic, chit, dab, dag,
-  dal, dit, dub, dug, fab, gam, ger, gus, hem, hep, hud, kat, lam, lax, lex, lug,
-  lux, moc, mos, mot, mum, nad, nay, nib, nip, pak, pap, pax, rig, rum, sac, sal,
-  sax, sec, shin, sis, ska, slang, sus, tad, taj, tac, tic, yep, yum, fax, cain,
-  key, mob, buy, dam, wap, yes, but, put, lag, buf, lip, aid, aim, dig, dim, din,
-  dip, pail, cad, chap, bend, lid, gem, tin]
+  words: [rug, bus, ship, laos, bail, bam, bans, bib, bos, chic, chit, dab, dag, dal, dit, dub, dug, fab, gam, ger, gus, hem, hep, hud, kat, lam, lax, lex, lug, lux, moc, mos, mot, mum, nad, nay, nib, nip, pak, pap, pax, rig, rum, sac, sal, sax, sec, shin, sis, ska, slang, sus, tad, taj, tac, tic, yep, yum, fax, cain, key, mob, buy, dam, wap, yes, but, put, lag, buf, lip, aid, aim, dig, dim, din, dip, pail, cad, chap, bend, lid, gem, tin]
 
 translator:
   # 字典文件
@@ -220,15 +212,6 @@ speller:
     - derive/([tl])eng$/$1en/ # ten → teng
     - derive/([qwrtypsdfghjklzxcbnm])([aeio])ng$/$1ng/ # lng → lang、leng、ling、long
 
-wubi98_mint:
-  tag: wubi98_mint
-  dictionary: custom_dict.wubi
-  enable_user_dict: false
-  enable_completion: true
-  prefix: "uw"
-  suffix: "'"
-  tips: 〔五笔〕
-
 stroke:
   tag: stroke
   dictionary: stroke
@@ -251,7 +234,7 @@ chaizi:
   tips: 〔拆字〕
 
 reverse_lookup:
-  tags: [wubi98_mint,stroke,chaizi]
+  tags: [stroke,chaizi]
   overwrite_comment: true
   dictionary: dicts/rime_ice.8105
 
@@ -280,7 +263,6 @@ recognizer:
   import_preset: default
   patterns:
     punct: "^/([0-9]0?|[a-z]+)$"
-    wubi98_mint: "uw[a-z]*'?$"
     stroke: "ui[a-z]*'?$"
     chaizi: "uu[a-z]*'?$"
     number: "^R[0-9]+[.]?[0-9]*"
